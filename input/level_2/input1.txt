@@ -1,0 +1,15 @@
+2
+9 6 -1
+1 10 -3
+xxxxxxxxxxxxxxx
+xx  x  xx +   x
+xx    xxx  xx x
+    xx       xx
+x  xx     x   x
+x  x x    x x x
+x   x x x S x x
+x        xx x x
+xx x    x  x  x
+x   x + x     x
+xx  x  x     xx
+xxxxxxxxxxxxxxx
