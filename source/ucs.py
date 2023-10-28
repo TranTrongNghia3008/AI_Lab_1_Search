@@ -1,83 +1,71 @@
 import heapq
+from utils import *
 
-def is_valid_move(x, y, rows, cols, grid, closed):
-    return 0 <= x < rows and 0 <= y < cols and grid[x][y] != 'x' and ((x, y) not in closed)
+class UCS:
+    def __init__(self, matrix):
+        self.matrix = matrix
+        self.rows = len(matrix)
+        self.cols = len(matrix[0])
+        self.start = Utils.find_start(matrix=matrix, rows=self.rows, cols=self.cols)
+        self.end = Utils.find_end(matrix=matrix, rows=self.rows, cols=self.cols)
+        self.visited = [[False]*self.cols for _ in range(self.rows)]
+        self.visit = []
+        self.path = []
 
-def findStart(grid, rows, cols):
-    for i in range(rows):
-        for j in range(cols):
-            if grid[i][j] == 'S':
-                return i, j
+    def is_valid_move(self, node, closed):
+        return 0 <= node[0] < self.rows and 0 <= node[1] < self.cols and self.matrix[node[0]][node[1]] != 'x' and (node not in closed)
 
-def findEnd(grid, rows, cols):
-    for i in range(rows):
-        if grid[i][0] == ' ':
-            return i, 0
-        if grid[i][-1] == ' ':
-            return i, cols - 1
 
-    for j in range(cols):
-        if grid[0][j] == ' ':
-            return 0, j
-        if grid[-1][j] == ' ':
-            return rows - 1, j   
+    def ucs(self, dist, trace):
+        queue = [(0, self.start)]
+        heapq.heapify(queue)
 
-def ucs(x, y, e_x, e_y, rows, cols, grid, dist, trace, visit):
-    queue = [(0, (x, y))]
-    heapq.heapify(queue)
+        closed = set()
+        self.visit.append(self.start)
+        dist[self.start[0]][self.start[1]] = 0
 
-    closed = set()
-    visit.append((x, y))
-    dist[x][y] = 0
+        while queue:
+            cost, current = heapq.heappop(queue)
 
-    while queue:
-        cost, (current_x, current_y) = heapq.heappop(queue)
+            if current == self.end:
+                return True
 
-        if current_x == e_x and current_y == e_y:
-            return True
+            closed.add(current)
 
-        closed.add((current_x, current_y))
+            directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+            for dx, dy in directions:
+                next = (current[0] + dx, current[1] + dy)
+                if self.is_valid_move(next, closed):
+                    next_cost = cost + 1
+                    self.visit.append(next)
+                    heapq.heappush(queue, (next_cost, next))
 
-        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-        for dx, dy in directions:
-            next_x, next_y = current_x + dx, current_y + dy
-            if is_valid_move(next_x, next_y, rows, cols, grid, closed):
-                next_cost = cost + 1
-                visit.append((next_x, next_y))
-                heapq.heappush(queue, (next_cost, (next_x, next_y)))
+                    if dist[next[0]][next[1]] == -1 or dist[next[0]][next[1]] > next_cost:
+                        trace[next[0]][next[1]] = current
+                        dist[next[0]][next[1]] = next_cost
+        
+        return False
 
-                if dist[next_x][next_y] == -1 or dist[next_x][next_y] > next_cost:
-                    trace[next_x][next_y] = (current_x, current_y)
-                    dist[next_x][next_y] = next_cost
+    def traced(self, trace):
+        i = self.end[0]
+        j = self.end[1]
+
+        while i != -1 and j != -1:
+            self.path.append((i, j))
+            (i, j) = trace[i][j]
+        
+        return self.path.reverse()
+
+def find_path_ucs(matrix):
+    alg = UCS(matrix)
+    trace = [[(-1, -1)] * alg.cols for _ in range(alg.rows)]
+    dist = [[-1] * alg.cols for _ in range(alg.rows)]
     
-    return False
-
-def traced(x, y, e_x, e_y, trace, path):
-    i = e_x
-    j = e_y
-
-    while i != -1 and j != -1:
-        path.append((i, j))
-        (i, j) = trace[i][j]
+    if alg.ucs(dist, trace):
+        alg.traced(trace)
+        return alg.visit, alg.path, len(alg.path)
     
-    return path.reverse()
+    print("No path found.")
+    return alg.visit, [], -1
 
-def find_path_ucs(grid):
-    rows, cols = len(grid), len(grid[0])
-
-    start_x, start_y = findStart(grid, rows, cols)
-    end_x, end_y = findEnd(grid, rows, cols)
-
-    trace = [[(-1, -1)] * cols for _ in range(rows)]
-    dist = [[-1] * cols for _ in range(rows)]
-    path = []
-    visit = []
-
-    checkAns = ucs(start_x, start_y, end_x, end_y, rows, cols, grid, dist, trace, visit)
     
-    if checkAns == False:
-        return visit, [], -1
-
-    traced(start_x, start_y, end_x, end_y, trace, path)
-    
-    return visit, path, len(path)
