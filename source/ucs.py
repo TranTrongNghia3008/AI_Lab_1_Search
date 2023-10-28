@@ -38,7 +38,8 @@ def ucs(x, y, e_x, e_y, rows, cols, grid, dist, trace, visit):
 
         closed.add((current_x, current_y))
 
-        for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        for dx, dy in directions:
             next_x, next_y = current_x + dx, current_y + dy
             if is_valid_move(next_x, next_y, rows, cols, grid, closed):
                 next_cost = cost + 1

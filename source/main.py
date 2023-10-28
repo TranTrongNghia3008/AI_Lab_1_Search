@@ -60,50 +60,46 @@ def write_ouput_file(level, inputName, name, res):
             file.write("NO")
         else:
             file.write(str(res))
+            
+            
+def process(algs, level):
+    numInp = 3
+    if level == "level_1":
+        numInp = 5
+    for i in range(numInp):
+        file_path = getPath('input', level, f'input{i + 1}.txt')
+        arrPoint, grid = read_input_file(file_path)
+        for alg in algs:
+            visit, path, resLength = [], [], 0
+            if alg == 'dfs':
+                visit, path, resLength = find_path_dfs(grid)
+            elif alg == 'bfs':
+                visit, path, resLength = find_path_bfs(grid)
+            elif alg == 'ucs':
+                visit, path, resLength = find_path_ucs(grid)
+            elif alg == 'gbfs_heuristic_1':
+                visit, path, resLength = find_path_gbfs(grid)
+            # elif alg == 'gbfs_heuristic_2':
+            #     visit, path, resLength = find_path_gbfs_euclidean(grid)
+            # elif alg == 'gbfs_heuristic_3':
+            #     visit, path, resLength = find_path_gbfs_manhattan_euclidean(grid)
+            elif alg == 'astar_heuristic_1':
+                visit, path, resLength = find_path_astar_manhattan(grid)
+            elif alg == 'astar_heuristic_2':
+                visit, path, resLength = find_path_astar_euclidean(grid)
+            elif alg == 'astar_heuristic_3':
+                visit, path, resLength = find_path_astar_manhattan_euclidean(grid)
+            elif alg == 'astar_heuristic_4':
+                visit, path, resLength = find_path_astar_rewards(grid, arrPoint)
+            elif alg == 'astar_heuristic_5':
+                visit, path, resLength = find_path_astar_random(grid, arrPoint)
 
-# algoName = ['dfs', 'bfs', 'ucs', 'gbfs', 'astar_heuristic_1']
-# algoName = ['astar_manhattan_euclidean']
-# for algo in algoName:
-#     for i in range(5):
-#         file_path = getPath('input', 'level_1', f'input{i + 1}.txt')
+            write_draw_file(level, f'input{i + 1}', f'{alg}.txt', path, visit)
+            write_ouput_file(level, f'input{i + 1}', f'{alg}.txt', resLength)
+            print(f"Done output input{i + 1} for {alg}!")
+            convert_result_to_video(f'../input/{level}/input{i + 1}.txt', f'../draw/{level}/input{i + 1}/{alg}.txt', f'../output/{level}/input{i + 1}/{alg}.gif', 5)
+    
 
-#         arrPoint, grid = read_input_file(file_path)
-#         visit = []
-#         path = []
-#         resLength = 0
-
-#         if algo == 'dfs':
-#             visit, path, resLength = find_path_dfs(grid)
-#         elif algo == 'bfs':
-#             visit, path, resLength = find_path_bfs(grid)
-#         elif algo == 'ucs':
-#             visit, path, resLength = find_path_ucs(grid)
-#         elif algo == 'gbfs':
-#             visit, path, resLength = find_path_gbfs(grid)
-#         elif algo == 'astar_manhattan':
-#             visit, path, resLength = find_path_astar_manhattan(grid)
-#         elif algo == 'astar_euclidean':
-#             visit, path, resLength = find_path_astar_euclidean(grid)
-#         elif algo == 'astar_manhattan_euclidean':
-#             visit, path, resLength = find_path_astar_manhattan_euclidean(grid)
-#         # else:
-#         #     visit, path, resLength = find_path_astar_manhattan_euclidean(grid)
-
-#         write_draw_file('level_1', f'input{i + 1}', f'{algo}.txt', path, visit)
-#         write_ouput_file('level_1', f'input{i + 1}', f'{algo}.txt', resLength)
-#         print(f"Done output input{i + 1} for {algo}!")
-#         convert_result_to_video(f'../input/level_1/input{i + 1}.txt', f'../draw/level_1/input{i + 1}/{algo}.txt', f'../output/level_1/input{i + 1}/{algo}.gif', 5)
-
-for i in range(3):
-    file_path = getPath('input', 'level_2', f'input{i + 1}.txt')
-
-    arrPoint, grid = read_input_file(file_path)
-
-    visit, path, resLength = find_path_astar_rewards(grid, arrPoint)
-    visit = []
-
-    write_draw_file('level_2', f'input{i + 1}', 'astar_rewards.txt', path, visit)
-    write_ouput_file('level_2', f'input{i + 1}', 'astar_rewards.txt', resLength)
-    print(f"Done output input{i + 1} for astar_rewards!")
-
-    convert_result_to_video(f'../input/level_2/input{i + 1}.txt', f'../draw/level_2/input{i + 1}/astar_rewards.txt', f'../output/level_2/input{i + 1}/astar_rewards.gif', 3)
+# algs = ['dfs', 'bfs', 'ucs', 'gbfs_heuristic_1', 'gbfs_heuristic_2', 'gbfs_heuristic_3', 'astar_heuristic_1', 'astar_heuristic_2', 'astar_heuristic_3', 'astar_heuristic_4', 'astar_heuristic_5']
+algs = ['astar_heuristic_4']
+process(algs, "level_2")
