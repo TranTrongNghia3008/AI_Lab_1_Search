@@ -2,7 +2,7 @@ import os
 from dfs import find_path_dfs
 from bfs import find_path_bfs
 from ucs import find_path_ucs
-from gbfs import find_path_gbfs
+from gbfs import find_path_gbfs_manhattan, find_path_gbfs_euclidean, find_path_gbfs_manhattan_euclidean
 from astar import find_path_astar_manhattan, find_path_astar_euclidean, find_path_astar_manhattan_euclidean
 from algo2 import find_path_algo2
 from astar_rewards import find_path_astar_rewards, find_path_astar_random
@@ -78,11 +78,11 @@ def process(algs, level):
             elif alg == 'ucs':
                 visit, path, resLength = find_path_ucs(grid)
             elif alg == 'gbfs_heuristic_1':
-                visit, path, resLength = find_path_gbfs(grid)
-            # elif alg == 'gbfs_heuristic_2':
-            #     visit, path, resLength = find_path_gbfs_euclidean(grid)
-            # elif alg == 'gbfs_heuristic_3':
-            #     visit, path, resLength = find_path_gbfs_manhattan_euclidean(grid)
+                visit, path, resLength = find_path_gbfs_manhattan(grid)
+            elif alg == 'gbfs_heuristic_2':
+                visit, path, resLength = find_path_gbfs_euclidean(grid)
+            elif alg == 'gbfs_heuristic_3':
+                visit, path, resLength = find_path_gbfs_manhattan_euclidean(grid)
             elif alg == 'astar_heuristic_1':
                 visit, path, resLength = find_path_astar_manhattan(grid)
             elif alg == 'astar_heuristic_2':
@@ -101,5 +101,11 @@ def process(algs, level):
     
 
 # algs = ['dfs', 'bfs', 'ucs', 'gbfs_heuristic_1', 'gbfs_heuristic_2', 'gbfs_heuristic_3', 'astar_heuristic_1', 'astar_heuristic_2', 'astar_heuristic_3', 'astar_heuristic_4', 'astar_heuristic_5']
-algs = ['ucs']
+algs = ['dfs', 'bfs', 'ucs', 'gbfs_heuristic_1', 'gbfs_heuristic_2', 'gbfs_heuristic_3', 'astar_heuristic_1', 'astar_heuristic_2', 'astar_heuristic_3']
 process(algs, "level_1")
+
+algs = ['astar_heuristic_4']
+process(algs, "level_2")
+
+algs = ['astar_heuristic_5']
+process(algs, "level_3")

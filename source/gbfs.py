@@ -1,59 +1,90 @@
 import heapq
+from utils import *
 
-def heuristic(node, end):
-    return abs(node[0] - end[0]) + abs(node[1] - end[1])
-
-def findStart(grid, rows, cols):
-    for i in range(rows):
-        for j in range(cols):
-            if grid[i][j] == 'S':
-                return i, j
-
-def findEnd(grid, rows, cols):
-    for i in range(rows):
-        if grid[i][0] == ' ':
-            return i, 0
-        if grid[i][-1] == ' ':
-            return i, cols - 1
-
-    for j in range(cols):
-        if grid[0][j] == ' ':
-            return 0, j
-        if grid[-1][j] == ' ':
-            return rows - 1, j  
-
-def find_path_gbfs(grid):
-    rows, cols = len(grid), len(grid[0])
-    start_x, start_y = findStart(grid, rows, cols)
-    end_x, end_y = findEnd(grid, rows, cols)
+class GBFS:
+    def __init__(self, matrix):
+        self.matrix = matrix
+        self.rows = len(matrix)
+        self.cols = len(matrix[0])
+        self.start = Utils.find_start(matrix=matrix, rows=self.rows, cols=self.cols)
+        self.end = Utils.find_end(matrix=matrix, rows=self.rows, cols=self.cols)
+        self.visited = [[False]*self.cols for _ in range(self.rows)]
+        self.visit = []
+        self.path = []
+        
+    def heuristic(self, heuristic, node):
+        if heuristic == "manhattan":
+            return Utils.heuristic_manhattan(node, self.end)
+        if heuristic == "euclidean": 
+            return Utils.heuristic_euclidean(node, self.end)
+        if heuristic == "manhattan_euclidean": 
+            return Utils.heuristic_manhattan_euclidean(node, self.end)
+        print("Can not find heuristic!")
+        return 0
     
-    visited = [[False for _ in range(cols)] for _ in range(rows)]
-    visit = []
+    def is_valid_move(self, node):
+        return 0 <= node[0] < self.rows and 0 <= node[1] < self.cols and self.matrix[node[0]][node[1]] != 'x' and (not self.visited[node[0]][node[1]])
 
-    # Priority queue (min heap) to select the node with the lowest heuristic value
-    priority_queue = [(heuristic((start_x, start_y), (end_x, end_y)), (start_x, start_y))]  # (heuristic, (x, y))
+
     
-    parents = {(start_x, start_y): None}
+    def gbfs(self, heuristic): 
+        p_queue = [(self.heuristic(heuristic, self.start), self.start)] 
+        parents = [[(-1,-1)] * self.cols for _ in range(self.rows)]
+        self.visited[self.start[0]][self.start[1]] = True
 
-    while priority_queue:
-        _, (current_x, current_y) = heapq.heappop(priority_queue)
-        visit.append((current_x, current_y))
+        while p_queue:
+            _, current = heapq.heappop(p_queue)
+            self.visit.append(current)
 
-        if current_x == end_x and current_y == end_y:
-            path = [(current_x, current_y)]
-            while (current_x, current_y) != (start_x, start_y):
-                current_x, current_y = parents[(current_x, current_y)]
-                path.append((current_x, current_y))
-            path.reverse()
-            return visit, path, len(path) - 1
+            if current == self.end:
+                self.path = [(current)]
+                while current != self.start:
+                    current = parents[current[0]][current[1]]
+                    self.path.append(current)
+                self.path.reverse()
+                return True
+            
+            distances = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 
-        for dx, dy in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-            nx, ny = current_x + dx, current_y + dy
-            if 0 <= nx < rows and 0 <= ny < cols and grid[nx][ny] != 'x' and not visited[nx][ny]:
-                heapq.heappush(priority_queue, (heuristic((nx, ny), (end_x, end_y)), (nx, ny)))
-                visited[nx][ny] = True
-                parents[(nx, ny)] = (current_x, current_y)
+            for d in distances :
+                next = (current[0] + d[0], current[1] + d[1])
 
+                if self.is_valid_move(next):
+                    h = self.heuristic(heuristic, next)
+                    heapq.heappush(p_queue, (h, next))
+                    self.visit.append(next)
+                    self.visited[current[0]][current[1]] = True
+                    parents[next[0]][next[1]] = current
+
+        print("No path found.")
+        return False
+        
+    
+    
+def find_path_gbfs_manhattan(matrix):
+    alg = GBFS(matrix)
+
+    if alg.gbfs("manhattan"):
+        return alg.visit, alg.path, len(alg.path)
+    
     print("No path found.")
-    return visit, [], -1
+    return alg.visit,[],-1
+
+def find_path_gbfs_euclidean(matrix):
+    alg = GBFS(matrix)
+
+    if alg.gbfs("euclidean"):
+        return alg.visit, alg.path, len(alg.path)
+    
+    print("No path found.")
+    return alg.visit,[],-1
+
+def find_path_gbfs_manhattan_euclidean(matrix):
+    alg = GBFS(matrix)
+
+    if alg.gbfs("manhattan_euclidean"):
+        return alg.visit, alg.path, len(alg.path)
+    
+    print("No path found.")
+    return alg.visit,[],-1
 

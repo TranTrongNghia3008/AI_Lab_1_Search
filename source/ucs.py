@@ -12,33 +12,34 @@ class UCS:
         self.visit = []
         self.path = []
 
-    def is_valid_move(self, node, closed):
-        return 0 <= node[0] < self.rows and 0 <= node[1] < self.cols and self.matrix[node[0]][node[1]] != 'x' and (node not in closed)
+    def is_valid_move(self, node):
+        return 0 <= node[0] < self.rows and 0 <= node[1] < self.cols and self.matrix[node[0]][node[1]] != 'x' and not self.visited[node[0]][node[1]]
 
 
     def ucs(self, dist, trace):
-        queue = [(0, self.start)]
-        heapq.heapify(queue)
+        p_queue = [(0, self.start)]
+        heapq.heapify(p_queue)
 
-        closed = set()
         self.visit.append(self.start)
         dist[self.start[0]][self.start[1]] = 0
+        self.visited[self.start[0]][self.start[1]] = True
 
-        while queue:
-            cost, current = heapq.heappop(queue)
+        while p_queue:
+            cost, current = heapq.heappop(p_queue)
 
             if current == self.end:
                 return True
 
-            closed.add(current)
+            self.visited[current[0]][current[1]] == True
 
             directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
             for dx, dy in directions:
                 next = (current[0] + dx, current[1] + dy)
-                if self.is_valid_move(next, closed):
+                if self.is_valid_move(next):
                     next_cost = cost + 1
                     self.visit.append(next)
-                    heapq.heappush(queue, (next_cost, next))
+                    heapq.heappush(p_queue, (next_cost, next))
+                    self.visited[current[0]][current[1]] = True
 
                     if dist[next[0]][next[1]] == -1 or dist[next[0]][next[1]] > next_cost:
                         trace[next[0]][next[1]] = current

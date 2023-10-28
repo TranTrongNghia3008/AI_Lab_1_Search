@@ -256,7 +256,7 @@ class AStartReward:
 
         rewards = points
         
-        while (len(rewards) > 0):     
+        while rewards:     
             next_point = end
             h_min = Utils.heuristic_with_reward(current_point, end, end)
             print(h_min)
@@ -282,7 +282,7 @@ class AStartReward:
             if next_point in rewards:
                 rewards.remove(next_point)
             
-        vi, p, x = self.astar(self.matrix, current_point, end)
+        vi, p, x = self.astar(current_point, end)
         if (x == -1 ):
             print("No path found.")
             return False
