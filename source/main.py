@@ -3,12 +3,12 @@ from dfs import find_path_dfs
 from bfs import find_path_bfs
 from ucs import find_path_ucs
 from gbfs import find_path_gbfs
-from astar import find_path_astar
+from astar import find_path_astar_manhattan, find_path_astar_euclidean, find_path_astar_manhattan_euclidean
 from algo2 import find_path_algo2
-from astar_random import find_path_astar_random
-from astar_rewards import find_path_astar_with_rewards
-from astar_euclidean import find_path_astar_euclidean
-from astar_manhattan_euclidean import find_path_astar_manhattan_euclidean
+from astar_rewards import find_path_astar_rewards, find_path_astar_random
+# from astar_rewards import find_path_astar_with_rewards
+# from astar_euclidean import find_path_astar_euclidean
+# from astar_manhattan_euclidean import find_path_astar_manhattan_euclidean
 from draw import convert_result_to_video
 
 
@@ -62,46 +62,48 @@ def write_ouput_file(level, inputName, name, res):
             file.write(str(res))
 
 # algoName = ['dfs', 'bfs', 'ucs', 'gbfs', 'astar_heuristic_1']
-algoName = ['dfs']
-for algo in algoName:
-    for i in range(5):
-        file_path = getPath('input', 'level_1', f'input{i + 1}.txt')
+# algoName = ['astar_manhattan_euclidean']
+# for algo in algoName:
+#     for i in range(5):
+#         file_path = getPath('input', 'level_1', f'input{i + 1}.txt')
 
-        arrPoint, grid = read_input_file(file_path)
-        visit = []
-        path = []
-        resLength = 0
+#         arrPoint, grid = read_input_file(file_path)
+#         visit = []
+#         path = []
+#         resLength = 0
 
-        if algo == 'dfs':
-            visit, path, resLength = find_path_dfs(grid)
-        elif algo == 'bfs':
-            visit, path, resLength = find_path_bfs(grid)
-        elif algo == 'ucs':
-            visit, path, resLength = find_path_ucs(grid)
-        elif algo == 'gbfs':
-            visit, path, resLength = find_path_gbfs(grid)
-        elif algo == 'astar_heuristic_1':
-            visit, path, resLength = find_path_astar(grid)
-        elif algo == 'astar_manhattan_euclidean':
-            visit, path, resLength = find_path_astar_euclidean(grid)
-        else:
-            visit, path, resLength = find_path_astar_manhattan_euclidean(grid)
+#         if algo == 'dfs':
+#             visit, path, resLength = find_path_dfs(grid)
+#         elif algo == 'bfs':
+#             visit, path, resLength = find_path_bfs(grid)
+#         elif algo == 'ucs':
+#             visit, path, resLength = find_path_ucs(grid)
+#         elif algo == 'gbfs':
+#             visit, path, resLength = find_path_gbfs(grid)
+#         elif algo == 'astar_manhattan':
+#             visit, path, resLength = find_path_astar_manhattan(grid)
+#         elif algo == 'astar_euclidean':
+#             visit, path, resLength = find_path_astar_euclidean(grid)
+#         elif algo == 'astar_manhattan_euclidean':
+#             visit, path, resLength = find_path_astar_manhattan_euclidean(grid)
+#         # else:
+#         #     visit, path, resLength = find_path_astar_manhattan_euclidean(grid)
 
-        write_draw_file('level_1', f'input{i + 1}', f'{algo}.txt', path, visit)
-        write_ouput_file('level_1', f'input{i + 1}', f'{algo}.txt', resLength)
-        print(f"Done output input{i + 1} for {algo}!")
-        convert_result_to_video(f'../input/level_1/input{i + 1}.txt', f'../draw/level_1/input{i + 1}/{algo}.txt', f'../output/level_1/input{i + 1}/{algo}.gif', 5)
+#         write_draw_file('level_1', f'input{i + 1}', f'{algo}.txt', path, visit)
+#         write_ouput_file('level_1', f'input{i + 1}', f'{algo}.txt', resLength)
+#         print(f"Done output input{i + 1} for {algo}!")
+#         convert_result_to_video(f'../input/level_1/input{i + 1}.txt', f'../draw/level_1/input{i + 1}/{algo}.txt', f'../output/level_1/input{i + 1}/{algo}.gif', 5)
 
-# for i in range(3):
-#     file_path = getPath('input', 'level_2', f'input{i + 1}.txt')
+for i in range(3):
+    file_path = getPath('input', 'level_2', f'input{i + 1}.txt')
 
-#     arrPoint, grid = read_input_file(file_path)
+    arrPoint, grid = read_input_file(file_path)
 
-#     visit, path, resLength = find_path_astar_with_rewards(grid, arrPoint)
-#     visit = []
+    visit, path, resLength = find_path_astar_rewards(grid, arrPoint)
+    visit = []
 
-#     write_draw_file('level_2', f'input{i + 1}', 'astart_l2.txt', path, visit)
-#     write_ouput_file('level_2', f'input{i + 1}', 'astart_l2.txt', resLength)
-#     print(f"Done output input{i + 1} for astart_l2!")
+    write_draw_file('level_2', f'input{i + 1}', 'astar_rewards.txt', path, visit)
+    write_ouput_file('level_2', f'input{i + 1}', 'astar_rewards.txt', resLength)
+    print(f"Done output input{i + 1} for astar_rewards!")
 
-#     convert_result_to_video(f'../input/level_2/input{i + 1}.txt', f'../draw/level_2/input{i + 1}/astart_l2.txt', f'../output/level_2/input{i + 1}/astart_l2.gif', 3)
+    convert_result_to_video(f'../input/level_2/input{i + 1}.txt', f'../draw/level_2/input{i + 1}/astar_rewards.txt', f'../output/level_2/input{i + 1}/astar_rewards.gif', 3)
