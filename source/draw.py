@@ -106,6 +106,17 @@ def read_file(file_name: str = 'maze.txt'):
 
   return bonus_points, matrix
 
+def remove_duplicates_keeping_order(arr):
+    seen = set()  # Sử dụng một set để theo dõi các phần tử đã xuất hiện
+    result = []  # Danh sách kết quả
+    
+    for item in arr:
+        if item not in seen:
+            result.append(item)
+            seen.add(item)
+    
+    return result
+
 
 def read_traversal_and_route(file_name: str = 'traversal_and_route.txt'):
     with open(file_name, 'r') as f:
@@ -121,7 +132,7 @@ def read_traversal_and_route(file_name: str = 'traversal_and_route.txt'):
             i, j = map(int, next(f).strip().split())
             route.append((i, j))
 
-    return traversal_cells, route
+    return remove_duplicates_keeping_order(traversal_cells), route
 
 def convert_result_to_video(input_file = "input.txt", trace_file = "output.txt",saved_file="maze.gif",speed = 3):
     bonus_points, matrix = read_file(input_file)
