@@ -32,6 +32,7 @@ class Utils:
     def heuristic_with_reward(current_point, end, reward):
         distance_current_to_reward = abs(current_point[0] - reward[0]) + abs(current_point[1] - reward[1])
         distance_reward_to_end = abs(reward[0] - end[0]) + abs(reward[1] - end[1])
+    
         return 3*(distance_current_to_reward + distance_reward_to_end) + 2*reward[2]
     
 

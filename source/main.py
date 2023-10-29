@@ -116,8 +116,8 @@ def process(algs, level):
 algs = ['dfs', 'bfs', 'ucs', 'gbfs_heuristic_1', 'gbfs_heuristic_2', 'gbfs_heuristic_3', 'astar_heuristic_1', 'astar_heuristic_2', 'astar_heuristic_3']
 process(algs, "level_1")
 
-algs = ['astar_heuristic_4']
-process(algs, "level_2")
+# algs = ['astar_heuristic_4']
+# process(algs, "level_2")
 
-algs = ['astar_heuristic_5']
-process(algs, "level_3")
+# algs = ['astar_heuristic_5']
+# process(algs, "level_3")
