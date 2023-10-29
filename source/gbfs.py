@@ -56,7 +56,6 @@ class GBFS:
                     self.visited[current[0]][current[1]] = True
                     parents[next[0]][next[1]] = current
 
-        print("No path found.")
         return False
         
     

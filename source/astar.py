@@ -58,7 +58,6 @@ class ASTAR:
                         f = tentative_g + h
                         heapq.heappush(p_queue, (f, (nx, ny,current_x,current_y)))
 
-        print("No path found.")
         return False
     
 def find_path_astar_manhattan(matrix):

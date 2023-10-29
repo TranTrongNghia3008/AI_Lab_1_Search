@@ -5,12 +5,8 @@ from bfs import find_path_bfs
 from ucs import find_path_ucs
 from gbfs import find_path_gbfs_manhattan, find_path_gbfs_euclidean, find_path_gbfs_manhattan_euclidean
 from astar import find_path_astar_manhattan, find_path_astar_euclidean, find_path_astar_manhattan_euclidean
-from algo2 import find_path_algo2
 from astar_rewards import find_path_astar_rewards, find_path_astar_random
-# from astar_rewards import find_path_astar_with_rewards
-# from astar_euclidean import find_path_astar_euclidean
-# from astar_manhattan_euclidean import find_path_astar_manhattan_euclidean
-from draw import convert_result_to_video
+from draw import *
 
 
 def read_input_file(file_path):
@@ -67,13 +63,15 @@ def process(algs, level):
     numInp = 3
     if level == "level_1":
         numInp = 5
+        
     for i in range(numInp):
         file_path = getPath('input', level, f'input{i + 1}.txt')
         arrPoint, grid = read_input_file(file_path)
         for alg in algs:
             print('----------------------------------------------------------------------')
+            print(f"***** {level} - input{i + 1} - {alg} *****")
             visit, path, resLength = [], [], 0
-            start_time = time.time()
+            start_time = time.perf_counter()
             if alg == 'dfs':
                 visit, path, resLength = find_path_dfs(grid)
             elif alg == 'bfs':
@@ -97,18 +95,20 @@ def process(algs, level):
             elif alg == 'astar_heuristic_5':
                 visit, path, resLength = find_path_astar_random(grid, arrPoint)
             
-            end_time = time.time()
+            end_time = time.perf_counter()
             elapsed_time = (end_time - start_time)*1000
 
             write_draw_file(level, f'input{i + 1}', f'{alg}.txt', path, visit)
             write_ouput_file(level, f'input{i + 1}', f'{alg}.txt', resLength)
-            print(f"Done output input{i + 1} for {alg}!")
-            number_of_iterations = convert_result_to_video(f'../input/{level}/input{i + 1}.txt', f'../draw/{level}/input{i + 1}/{alg}.txt', f'../output/{level}/input{i + 1}/{alg}.gif', 5)
             
+            draw = Draw()
+            number_of_iterations = draw.convert_result_to_video(f'../input/{level}/input{i + 1}.txt', f'../draw/{level}/input{i + 1}/{alg}.txt', f'../output/{level}/input{i + 1}/{alg}.gif', 5)
+            
+            print(f"SUCCESS!")
             print(f'Total number of openings: {len(visit)}')
             print(f'Number of iterations: {number_of_iterations}')
             print(f'Shortest path: {len(path)}')
-            print ("elapsed_time:{0}".format(elapsed_time) + "[sec]")
+            print ("Run time: {0}".format(elapsed_time) + " [milisec]")
 
     
 

@@ -170,11 +170,10 @@ class AStartReward:
         
         
     def find_shortest_path(self, points):
-
         shortest_distance = float('inf')
         shortest_permutation = []
         
-        n = 100000
+        n = len(points) * 10000
         for _ in range(n):  # Số lần lặp ngẫu nhiên (thay đổi theo nhu cầu)
             random.shuffle(points)  # Tạo hoán vị ngẫu nhiên
             total_distance = 0
