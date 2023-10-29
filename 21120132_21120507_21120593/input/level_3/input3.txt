@@ -1,0 +1,46 @@
+25
+17 20 0
+12 1 0
+3 10 0
+10 5 0
+1 11 0
+6 27 0
+15 31 0
+6 17 0
+15 33 0
+15 12 0
+3 20 0
+3 30 0
+5 20 0
+4 14 0
+2 20 0
+13 29 0
+1 24 0
+3 9 0
+4 32 0
+1 31 0
+11 1 0
+3 30 0
+1 9 0
+2 7 0
+18 14 0
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xx  x   x+x+   x x x    +x  x x+  x
+xx     +      x  xxx+x  xxxx      x
+x x   xxx++x  xx x x+  x    x + x x
+x  x  x x  xx + x x   x xx  xx x+ x
+x   xxx  x  x x     +          x xx
+xx       xx    x +  x   x  +x     x
+  xxxx   x   x        x x   x    xx
+x        x  x        x  x x   S   x
+x   x     x    x     x        x   x
+x x x+ x    x xx  x   x   x x    xx
+x+   xx     xx  x x    x   x      x
+x+ xx    xxx     x x   x    xxx  xx
+x xxxx x         x   xx    x +  x x
+xx  xx   x    xx     x     x   x xx
+x     x     +x    x x  xx   x x+ +x
+x   x x       x  x xx   xx   x    x
+x   x x x xxx       +       x    xx
+x   x xx     x+x x x            x x
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
