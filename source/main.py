@@ -1,4 +1,5 @@
 import os
+import time
 from dfs import find_path_dfs
 from bfs import find_path_bfs
 from ucs import find_path_ucs
@@ -70,7 +71,9 @@ def process(algs, level):
         file_path = getPath('input', level, f'input{i + 1}.txt')
         arrPoint, grid = read_input_file(file_path)
         for alg in algs:
+            print('----------------------------------------------------------------------')
             visit, path, resLength = [], [], 0
+            start_time = time.time()
             if alg == 'dfs':
                 visit, path, resLength = find_path_dfs(grid)
             elif alg == 'bfs':
@@ -93,11 +96,20 @@ def process(algs, level):
                 visit, path, resLength = find_path_astar_rewards(grid, arrPoint)
             elif alg == 'astar_heuristic_5':
                 visit, path, resLength = find_path_astar_random(grid, arrPoint)
+            
+            end_time = time.time()
+            elapsed_time = (end_time - start_time)*1000
 
             write_draw_file(level, f'input{i + 1}', f'{alg}.txt', path, visit)
             write_ouput_file(level, f'input{i + 1}', f'{alg}.txt', resLength)
             print(f"Done output input{i + 1} for {alg}!")
-            convert_result_to_video(f'../input/{level}/input{i + 1}.txt', f'../draw/{level}/input{i + 1}/{alg}.txt', f'../output/{level}/input{i + 1}/{alg}.gif', 5)
+            number_of_iterations = convert_result_to_video(f'../input/{level}/input{i + 1}.txt', f'../draw/{level}/input{i + 1}/{alg}.txt', f'../output/{level}/input{i + 1}/{alg}.gif', 5)
+            
+            print(f'Total number of openings: {len(visit)}')
+            print(f'Number of iterations: {number_of_iterations}')
+            print(f'Shortest path: {len(path)}')
+            print ("elapsed_time:{0}".format(elapsed_time) + "[sec]")
+
     
 
 # algs = ['dfs', 'bfs', 'ucs', 'gbfs_heuristic_1', 'gbfs_heuristic_2', 'gbfs_heuristic_3', 'astar_heuristic_1', 'astar_heuristic_2', 'astar_heuristic_3', 'astar_heuristic_4', 'astar_heuristic_5']

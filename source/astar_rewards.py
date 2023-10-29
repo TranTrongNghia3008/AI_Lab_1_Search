@@ -193,7 +193,6 @@ class AStartReward:
                 shortest_permutation.extend(points)
                 shortest_permutation.append((self.end[0], self.end[1], 0))
                 
-        print(shortest_permutation)
         return shortest_permutation
     
     def astar(self, start, end):
@@ -259,10 +258,8 @@ class AStartReward:
         while rewards:     
             next_point = end
             h_min = Utils.heuristic_with_reward(current_point, end, end)
-            print(h_min)
             for reward in rewards:
                 h_with_reward = Utils.heuristic_with_reward(current_point, end, reward)
-                print(h_with_reward)
                 if (h_with_reward < h_min):
                     h_min = h_with_reward
                     next_point = reward

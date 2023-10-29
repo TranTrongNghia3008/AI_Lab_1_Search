@@ -132,11 +132,14 @@ def read_traversal_and_route(file_name: str = 'traversal_and_route.txt'):
             i, j = map(int, next(f).strip().split())
             route.append((i, j))
 
-    return remove_duplicates_keeping_order(traversal_cells), route
+    return traversal_cells, route
 
 def convert_result_to_video(input_file = "input.txt", trace_file = "output.txt",saved_file="maze.gif",speed = 3):
     bonus_points, matrix = read_file(input_file)
     traversal_cells, route = read_traversal_and_route(trace_file)
+    total_number_of_openings = len(traversal_cells)
+    traversal_cells = remove_duplicates_keeping_order(traversal_cells)
+    number_of_iterations = total_number_of_openings - len(traversal_cells)
     frames=[]
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
@@ -147,5 +150,6 @@ def convert_result_to_video(input_file = "input.txt", trace_file = "output.txt",
                     end = (i, j)
     frames = visualize_maze(matrix, bonus_points, start, end,route,traversal_cells,speed)
     imageio.mimsave(saved_file, frames, 'GIF', duration=0.001)
+    return number_of_iterations
 
 # convert_result_to_video('../input/level_1/input1.txt','../draw/level_1/input1/dfs.txt','../output/level_1/input1/dfs.gif',5)
