@@ -97,12 +97,19 @@ def process(algs, level):
             
             end_time = time.perf_counter()
             elapsed_time = (end_time - start_time)*1000
+            index = alg.find('_')
+            alg_folder = ""
+            if index != -1:
+                alg_folder = alg[:index]
+            else:
+                alg_folder = alg
 
             write_draw_file(level, f'input{i + 1}', f'{alg}.txt', path, visit)
-            write_ouput_file(level, f'input{i + 1}', f'{alg}.txt', resLength)
+            write_ouput_file(level, f'input{i + 1}', f'{alg_folder}/{alg}.txt', resLength)
             
             draw = Draw()
-            number_of_iterations = draw.convert_result_to_video(f'../input/{level}/input{i + 1}.txt', f'../draw/{level}/input{i + 1}/{alg}.txt', f'../output/{level}/input{i + 1}/{alg}.gif', 5)
+            
+            number_of_iterations = draw.convert_result_to_video(f'../input/{level}/input{i + 1}.txt', f'../draw/{level}/input{i + 1}/{alg}.txt', f'../output/{level}/input{i + 1}/{alg_folder}/{alg}.gif', 5)
             
             print(f"SUCCESS!")
             print(f'Total number of openings: {len(visit)}')
